@@ -1,0 +1,15 @@
+<!-- inventario/templates/eliminar-equipo.html -->
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Eliminar Equipo{% endblock %}
+
+
+{% block content %}
+<h3>Eliminar Equipo</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form |  crispy }}
+    <input type="submit" value="Eliminar">
+</form>
+{% endblock %}

@@ -1,0 +1,61 @@
+<!-- templates/base.html -->
+{% load sass_tags %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+  <title>{% block title %}{% endblock %} - Xestor EDIXGAL</title>
+
+  <link href="{% sass_src 'style.scss' %}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <header class="sitenav">
+    <nav class="navbar navbar-expand-lg navbar-light mainnavbar">
+      <div class="container">
+        <span class="navbar-brand mainnav__brand">
+          <a class="mainnav__sitename" href="{% url 'home' %}">Xestor EDIXGAL</a>
+        </span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse mainnav__mainmenu" id="mainMenu">
+          <ul class="navbar-nav mainnav__appmenu">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'lista-equipos' %}">Lista Equipos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'lista-usuarios' %}">Lista Usuarios</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'lista-incidencias' %}">Lista Incidencias</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login-cargar-datos-xestor' %}">Cargar Datos</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main class="container sitecontent">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  {% block js %}
+    <script defer src="{% static '@fortawesome/fontawesome-free/js/brands.js' %}"></script>
+    <script defer src="{% static '@fortawesome/fontawesome-free/js/solid.js' %}"></script>
+    <script defer src="{% static '@fortawesome/fontawesome-free/js/fontawesome.js' %}"></script>
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
+  {% endblock %}
+
+  {% block morejs %}
+  {% endblock %}
+
+</body>
+</html>

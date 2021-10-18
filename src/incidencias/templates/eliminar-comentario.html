@@ -1,0 +1,15 @@
+<!-- incidencias/templates/eliminar-comentario.html -->
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Eliminar Comentario de Incidencia{% endblock %}
+
+
+{% block content %}
+<h3>Eliminar Comentario</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form |  crispy }}
+    <input type="submit" value="Eliminar">
+</form>
+{% endblock %}

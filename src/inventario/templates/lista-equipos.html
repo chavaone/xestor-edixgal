@@ -1,0 +1,81 @@
+<!-- inventario/templates/lista-equipos.html -->
+{% extends "base.html" %}
+
+{% block title %}Lista Equipos{% endblock %}
+
+{% block content %}
+
+<h3>Lista Equipos</h3>
+<form action="" method="GET" class="form-inline">
+  <div class="row">
+    <div class="col">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="busca" name="busca" onchange="this.form.submit()" value="{{busca}}">
+        <label for="busca">Buscar</label>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% if equipos %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">N. de Serie</th>
+      <th scope="col">Descrición</th>
+      <th scope="col">Usuario</th>
+      <th scope="col">Incidencias</th>
+      <th scope="col">Accións</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for equipo in equipos %}
+      <tr>
+        <th scope="row">{{equipo.pk}}</th>
+        <td>{{equipo.sn}}</td>
+        <td>{{equipo.info}}</td>
+        <td>
+          {% for usuario in equipo.usuarios %}
+            <a href="{% url 'vista-usuario' pk=usuario.pk %}">{{usuario.nome}}</a>
+            <br/>
+          {% endfor %}</td>
+        <td>
+          {% for incidencia in equipo.incidencias %}
+            <a href="{% url 'vista-incidencia' pk=incidencia.pk %}">#{{incidencia.pk}}</a>
+          {% endfor %}
+        </td>
+        <td>
+          <a class="btn btn-default" href="{% url 'vista-equipo' pk=equipo.pk %}">
+            <i class="fas fa-eye"></i>
+          </a>
+          <a class="btn btn-default" href="{% url 'crear-incidencia' %}?equipo={{equipo.pk}}">
+            <i class="fas fa-bell"></i>
+          </a>
+          <a class="btn btn-default {% if equipo.usuarios %}disabled {% endif %}" href="{% url 'asignar-equipo' %}?equipo={{equipo.pk}}">
+            <i class="fas fa-hand-point-up"></i>
+          </a>
+          <a class="btn btn-default" href="{% url 'editar-equipo' pk=equipo.pk %}">
+            <i class="fas fa-edit"></i>
+          </a>
+          <a class="btn btn-default" href="{% url 'eliminar-equipo' pk=equipo.pk %}">
+            <i class="fas fa-trash"></i>
+          </a>
+        </td>
+      </tr>
+    {% endfor%}
+    <tr>
+
+    </tr>
+  </tbody>
+</table>
+{% else %}
+<div>
+  <em>Sen equipos</em>
+</div>
+{% endif %}
+<a href="{% url 'crear-equipo' %}" class="btn btn-primary">Engadir novo</a>
+
+
+
+{% endblock %}

@@ -1,0 +1,122 @@
+<!-- inventario/templates/vista-usuario.html -->
+{% extends "base.html" %}
+
+{% block title %}Lista Equipos{% endblock %}
+
+{% block content %}
+
+<section>
+  <h3>Usuario <em>{{usuario.nome}} {{usuario.apelidos}}</em></h3>
+
+  <dl>
+   <dt>Nome</dt>
+   <dd>{{usuario.nome}}</dd>
+
+   <dt>Apelidos</dt>
+   <dd>{{usuario.apelidos}}</dd>
+
+   <dt>Curso</dt>
+   <dd>{{usuario.nivel}} {{usuario.curso}}</dd>
+  </dl>
+
+  <div>
+    <a href="{% url 'editar-usuario' pk=usuario.pk %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar Usuario</a>
+    <a href="{% url 'eliminar-usuario' pk=usuario.pk %}" class="btn btn-primary"><i class="fas fa-trash"></i> Eliminar Usuario</a>
+    <a href="{% url 'baixa-usuario' pk=usuario.pk%}" class="btn btn-primary{% if usuario.nivel == 'eA' or usuario.nivel == 'eP' %} disabled{% endif %}">Dar de baixa</a>
+  </div>
+</section>
+
+<section>
+  <h3>Equipos</h3>
+  {% if usuario.equipos %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Número de Serie</th>
+          <th scope="col">Descrición</th>
+          <th scope="col">Data Asignación</th>
+          <th scope="col">Data Fin</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for equipo in usuario.equipos %}
+          <tr>
+            <th scope="row">
+              <a href="{% url 'vista-equipo' pk=equipo.pk %}">{{equipo.pk}}</a>
+            </th>
+            <td>{{equipo.sn}}</td>
+            <td>{% if equipo.info %}{{equipo.info}}{% endif %}</td>
+            <td>{{equipo.data_ini}}</td>
+            <td>{{equipo.data_fin}}</td>
+            <td><a href="{% url 'terminar-asignacion' pk=equipo.pk_asignacion %}?usuario={{usuario.pk}}" class="btn btn-default{% if equipo.data_fin %} disabled{% endif %}"><i class="fas fa-times-circle"></i></a></td>
+          </tr>
+        {% endfor%}
+        <tr>
+
+        </tr>
+      </tbody>
+    </table>
+  {% else %}
+  <div>
+    <em>Sen equipos</em>
+  </div>
+  {% endif%}
+  <div>
+    <a href="{% url 'asignar-equipo' %}?usuario={{usuario.pk}}" class="btn btn-primary">Asignar Equipo</a>
+  </div>
+</section>
+
+
+<section>
+  <h3>Incidencias</h3>
+  {% if usuario.incidencias %}
+    <div class="accordion" id="incidencias" class="listaIncidencias">
+      {% for incidencia in usuario.incidencias %}
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading{{incidencia.pk}}">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{incidencia.pk}}" aria-expanded="true" aria-controls="collapse{{incidencia.pk}}">
+            <span class="numero">#{{incidencia.pk}}</span>
+            <span class="data">{{incidencia.data}}</span>
+            <span class="aberta">
+              {% if incidencia.aberta %}
+                <span class="badge rounded-pill bg-warning text-dark">ABERTA</span>
+              {% else %}
+                <span class="badge rounded-pill bg-success">PECHADA</span>
+              {% endif %}
+            </span>
+            <span class="comentarios">
+              <span class=" badge bg-primary rounded-pill">{{incidencia.comentarios | length}}</span>
+            </span>
+          </button>
+        </h2>
+        <div id="collapse{{incidencia.pk}}" class="accordion-collapse collapse" aria-labelledby="heading{{incidencia.pk}}" data-bs-parent="#incidencias">
+          <div class="accordion-body">
+          {% for comentario in incidencia.comentarios %}
+            <article class="comentario">
+              <time>{{comentario.data}}</time>
+              <p>{{comentario.desc}}</p>
+            </article>
+          {% empty %}
+            <article class="comentario">
+              <em>Sen comentarios</em>
+            </article>
+          {% endfor %}
+          <a href="{% url 'vista-incidencia' pk=incidencia.pk %}">Ver Todos</a>
+        </div>
+        </div>
+      </div>
+      {% endfor%}
+    </div>
+  {% else %}
+    <div>
+      <em>Sen incidencias</em>
+    </div>
+  {% endif%}
+  <div>
+    <a href="{% url 'crear-incidencia' %}?usuario={{usuario.pk}}" class="btn btn-primary">Nova Incidencia</a>
+  </div>
+</section>
+
+{% endblock %}

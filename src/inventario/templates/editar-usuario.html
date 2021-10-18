@@ -1,0 +1,15 @@
+<!-- inventario/templates/editar-usuario.html -->
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Editar Usuario{% endblock %}
+
+
+{% block content %}
+<h3>Editar Usuario</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form |  crispy }}
+    <input type="submit" value="Gardar">
+</form>
+{% endblock %}

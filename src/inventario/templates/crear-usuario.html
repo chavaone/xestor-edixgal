@@ -1,0 +1,15 @@
+<!-- inventario/templates/crear-equipo.html -->
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Lista Equipos{% endblock %}
+
+
+{% block content %}
+<h3>Novo Usuario</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form |  crispy }}
+    <input type="submit" value="Gardar">
+</form>
+{% endblock %}

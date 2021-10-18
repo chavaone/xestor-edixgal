@@ -1,0 +1,16 @@
+{
+  "name": "xestor-edixgal",
+  "version": "0.1.0",
+  "description": "Xestor para controlar incidencias EDIXGAL",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "bootstrap": "^5.1.2",
+    "jquery": "^3.6.0"
+  }
+}

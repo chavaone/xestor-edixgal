@@ -1,0 +1,120 @@
+<!-- inventario/templates/lista-usuarios.html -->
+{% extends "base.html" %}
+
+{% block title %}Lista Usuarios{% endblock %}
+
+{% block content %}
+
+<h3>Lista Usuarios</h3>
+<div>
+  <form action="" method="GET" class="form-inline">
+    <div class="row">
+      <div class="col">
+        <div class="form-floating">
+          <select class="form-control form-control-sm" name="order-by" id="order-by" onchange="this.form.submit()">
+            <option value="curso nivel apelidos" selected>Curso (por defecto)</option>
+            <option value="apelidos">Apelidos</option>
+          </select>
+          <label for="order-by">Ordenar</label>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="form-floating">
+          <select class="form-control form-control-sm" name="filter" id="filter" onchange="this.form.submit()">
+            <option {% if not filtro_activo%}selected{% endif %} value="">Ningún (por defecto)</option>
+            {% for filtro in opcions_filtro %}
+            <option {% if filtro_activo == filtro %}selected{% endif %} value="{{filtro}}">{{filtro}}</option>
+            {% endfor  %}
+          </select>
+          <label for="order-by">Filtrar</label>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="busca" name="busca" onchange="this.form.submit()" value="{{busca}}">
+          <label for="busca">Buscar</label>         
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nome</th>
+      <th scope="col">Apelidos</th>
+      <th scope="col">Curso</th>
+      <th scope="col">Equipos</th>
+      <th scope="col">Incidencias</th>
+      <th scope="col">Accións</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for usuario in usuarios %}
+      <tr>
+        <th scope="row">{{usuario.pk}}</th>
+        <td scope="row">{{usuario.nome}}</td>
+        <td scope="row">{{usuario.apelidos}}</td>
+        <td scope="row">{{usuario.nivel}} {{usuario.curso}}</td>
+        <td scope="row">{% for equipo in usuario.equipos %}<a href="{% url 'vista-equipo' pk=equipo.pk %}">{{equipo.sn}}</a><br/>{% endfor %}</td>
+        <td scope="row">
+          {% for incidencia in usuario.incidencias %}
+            <a href="{% url 'vista-incidencia' pk=incidencia.pk %}">#{{incidencia.pk}}</a>
+          {% endfor %}
+        </td>
+        <td scope="row">
+          <a class="btn btn-default" href="{% url 'vista-usuario' pk=usuario.pk %}">
+            <i class="fas fa-eye"></i>
+          </a>
+          <a class="btn btn-default" href="{% url 'crear-incidencia' %}?usuario={{usuario.pk}}">
+            <i class="fas fa-bell"></i>
+          </a>
+          <a class="btn btn-default {% if usuario.equipos %}disabled {% endif %}" href="{% url 'asignar-equipo' %}?usuario={{usuario.pk}}">
+            <i class="fas fa-hand-point-up"></i>
+          </a>
+          <a class="btn btn-default" href="{% url 'editar-usuario' pk=usuario.pk %}">
+            <i class="fas fa-edit"></i>
+          </a>
+          <a class="btn btn-default" href="{% url 'eliminar-usuario' pk=usuario.pk %}">
+            <i class="fas fa-trash"></i>
+          </a>
+        </td>
+      </tr>
+    {% endfor%}
+    <tr>
+
+    </tr>
+  </tbody>
+</table>
+
+<a href="{% url 'crear-usuario' %}" class="btn btn-primary">Engadir novo</a>
+
+<nav aria-label="" class="paxinacion">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link{% if not paxina.has_previous %} disabled{% endif %}" href="?paxina={% if paxina.has_previous %}{{ paxina.previous_page_number }}{% endif %}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only">Previous</span>
+      </a>
+    </li>
+
+    {% for page in lista_paxinas %}
+    <li class="page-item">
+      <a class="page-link{% if page == paxina.number %} active{% endif %}" href="?paxina={{page}}">{{page}}</a>
+    </li>
+    {% endfor %}
+
+    <li class="page-item">
+      <a class="page-link{% if not paxina.has_next %} disabled{% endif %}" href="?paxina={% if paxina.has_next %}{{ paxina.next_page_number }}{% endif %}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+        <span class="sr-only">Next</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+{% endblock %}

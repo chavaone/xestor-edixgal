@@ -1,0 +1,121 @@
+<!-- inventario/templates/vista-equipo.html -->
+{% extends "base.html" %}
+
+{% block title %}Lista Equipos{% endblock %}
+
+{% block content %}
+
+<h3>Equipo #{{equipo.sn}}</h3>
+
+<section>
+
+  <dl>
+   <dt>Número de Serie</dt>
+   <dd>{{equipo.sn}}</dd>
+
+   <dt>Descrición</dt>
+   <dd>{{equipo.info}}</dd>
+
+   <dt>Estado</dt>
+   <dd>
+    {% if equipo.activo %}
+    <span class="badge rounded-pill bg-success">EN ACTIVO</span>
+    {% else %}
+    <span class="badge rounded-pill bg-danger">DE BAIXA</span>
+    {% endif %}
+   </dd>
+  </dl>
+
+  <div>
+    <a href="{% url 'editar-equipo' pk=equipo.pk %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar Equipo</a>
+    <a href="{% url 'eliminar-equipo' pk=equipo.pk %}" class="btn btn-primary"><i class="fas fa-trash"></i> Eliminar Equipo</a>
+    <a href="{% url 'cambiar-estado-equipo' pk=equipo.pk %}" class="btn btn-primary{% if not equipo.activo %} disabled{% endif %}"><i class="fas fa-times-circle"></i> Dar de baixa</a>
+  </div>
+
+</section>
+
+<section>
+  <h3>Usuarios</h3>
+  {% if equipo.usuarios %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Nivel</th>
+          <th scope="col">Data Asignación</th>
+          <th scope="col">Data Fin</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for usuario in equipo.usuarios %}
+          <tr>
+            <th scope="row">{{usuario.pk}}</th>
+            <td scope="row">{{usuario.nome}}</td>
+            <td scope="row">{{usuario.nivel}}</td>
+            <td scope="row">{{usuario.data_ini}}</td>
+            <td scope="row">{{usuario.data_fin}}</td>
+            <td><a href="{% url 'terminar-asignacion' pk=usuario.pk_asignacion %}?equipo={{equipo.pk}}" class="btn btn-default{% if usuario.data_fin %} disabled{% endif %}"><i class="fas fa-times-circle"></i></a></td>
+          </tr>
+        {% endfor%}
+      </tbody>
+    </table>
+  {% else %}
+  <div>
+    <em>Sen usuarios</em>
+  </div>
+  {% endif%}
+  <div>
+    <a href="{% url 'asignar-equipo' %}?equipo={{equipo.pk}}" class="btn btn-primary">Asignar Equipo</a>
+  </div>
+</section>
+
+
+
+<section>
+  <h3>Incidencias</h3>
+  {% if equipo.incidencias %}
+    <div class="accordion" id="incidencias" class="listaIncidencias">
+      {% for incidencia in equipo.incidencias %}
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading{{incidencia.pk}}">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{incidencia.pk}}" aria-expanded="true" aria-controls="collapse{{incidencia.pk}}">
+            <span class="numero">#{{incidencia.pk}}</span>
+            <span class="data">{{incidencia.data}}</span>
+            <span class="aberta">
+              {% if incidencia.aberta %}
+                <span class="badge rounded-pill bg-warning text-dark">ABERTA</span>
+              {% else %}
+                <span class="badge rounded-pill bg-success">PECHADA</span>
+              {% endif %}
+            </span>
+            <span class="comentarios">
+              <span class=" badge bg-primary rounded-pill">{{incidencia.comentarios | length}}</span>
+            </span>
+          </button>
+        </h2>
+        <div id="collapse{{incidencia.pk}}" class="accordion-collapse collapse" aria-labelledby="heading{{incidencia.pk}}" data-bs-parent="#incidencias">
+          <div class="accordion-body">
+          {% for comentario in incidencia.comentarios %}
+          <p>{{comentario.data}}</p>
+          <p>{{comentario.desc}}</p>
+          <hr/>
+          {% endfor %}
+          <a href="{% url 'vista-incidencia' pk=incidencia.pk %}">Ver Todos</a>
+        </div>
+        </div>
+      </div>
+      {% endfor%}
+    </div>
+  {% else %}
+  <div>
+    <em>Sen incidencias</em>
+  </div>
+  {% endif %}
+  <div>
+    <a href="{% url 'crear-incidencia' %}" class="btn btn-primary">Nova Incidencia</a>
+  </div>
+</section>
+
+
+{% endblock %}

@@ -1,0 +1,113 @@
+<!-- incidencias/templates/vista-incidencia.html -->
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Incidencia #{{incidencia.pk}}{% endblock %}
+
+{% block content %}
+<section>
+  <h3>Incidencia #{{incidencia.pk}}</h3>
+  <dl>
+    <dt>Data Creación</dt>
+    <dd>{{incidencia.data}}</dd>
+
+    <dt>Estado</dt>
+    <dd>
+      {% if incidencia.aberta %}
+        <span class="badge rounded-pill bg-warning text-dark">ABERTA</span>
+      {% else %}
+        <span class="badge rounded-pill bg-success">PECHADA</span>
+      {% endif %}
+    </dd>
+
+    <dt>Equipo</dt>
+    <dd>
+      {% if incidencia.equipo %}
+         <a href="{% url 'vista-equipo' pk=incidencia.equipo.pk %}">
+          {{incidencia.equipo.numeroDeSerie}}
+         </a>
+      {% else %}
+      <em>Sen equipo</em>
+      {% endif %}
+    </dd>
+
+    <dt>Usuario</dt>
+    <dd>
+      {% if incidencia.usuario %}
+         <a href="{% url 'vista-usuario' pk=incidencia.usuario.pk %}">
+           {{incidencia.usuario.nome}} {{incidencia.usuario.apelidos}} ({{incidencia.usuario.nivel}}{{incidencia.usuario.curso}})
+         </a>
+      {% else %}
+      <em>Sen usuario</em>
+      {% endif %}
+    </dd>
+  </dl>
+  <div>
+    <a class="btn btn-primary" href="{% url 'cambiar-estado-incidencia' pk=incidencia.pk %}">
+      {% if incidencia.aberta %}
+      Cerrar Incidencia
+      {% else %}
+      Reabrir Incidencia
+      {% endif %}
+    </a>
+    <a class="btn btn-primary" href="{% url 'eliminar-incidencia' pk=incidencia.pk %}"><i class="fa fa-trash"></i> Eliminar Incidencia</a>
+  </div>
+</section>
+
+<section>
+<h3>Comentarios</h3>
+<div class="listaComentarios">
+  {% for comentario in incidencia.comentarios %}
+  <article class="comentarioIncidencia">
+    <div class="comentarioIncidencia__info">
+      <time>{{comentario.data}}</time>
+      <a class="btn btn-default" href="{% url 'eliminar-comentario' pk=comentario.pk %}"><i class="fa fa-trash"></i></a>
+    </div>
+    <div class="comentarioIncidencia__body">
+      <p>{{comentario.desc}}</p>
+      {% if comentario.ficheiro %}
+      <a href="/media/{{comentario.ficheiro}}">
+        <img src="/media/{{comentario.ficheiro}}" class="img-thumbnail" alt="Ficheiro">
+      </a>
+      {% endif %}
+    </div>
+  </article>
+  {% empty %}
+    <div
+      <em>Sen Comentarios</em>
+    </div>
+  {% endfor %}
+
+</div>
+
+<button class="btn btn-primary" type="button"  data-bs-toggle="modal" data-bs-target="#engadirComentarios" aria-expanded="false" aria-controls="engadirComentarios">
+Engadir Comentario
+</button>
+
+</section>
+
+<div class="modal fade" id="engadirComentarios" tabindex="-1" role="dialog" aria-labelledby="engadirComentariosLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="engadirComentariosLabel">Crear comentario</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="post" action="{% url 'crear-comentario' %}" enctype="multipart/form-data">
+        <div class="modal-body">
+          {% csrf_token %}
+          {{ form_comentario |  crispy }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-secondary" value="Gardar">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

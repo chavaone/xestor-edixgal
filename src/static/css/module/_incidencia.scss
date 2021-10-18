@@ -1,0 +1,45 @@
+
+
+
+.comentarioIncidencia {
+
+  padding: 0.5em 0;
+  margin: 0.5em 0;
+  border-top: 0.5px solid rgba(0,0,0,0.2);
+
+  &__body {
+    padding: 0.2em 1em;
+    display: flex;
+
+    &>p {
+      flex: 1;
+    }
+
+    &>a {
+      flex-basis: 300px;
+    }
+
+  }
+
+}
+
+  .accordion-item .accordion-button {
+
+    .numero {
+      flex-basis: 40px;
+    }
+
+    .data {
+      flex: 1;
+      font-style: italic;
+    }
+
+    .aberta {
+      flex-basis:100px;
+    }
+
+    .comentarios {
+      flex-basis: 50px;
+    }
+
+  }

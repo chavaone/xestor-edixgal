@@ -1,0 +1,59 @@
+<!-- cargardatos/cargardatos.html -->
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Cargar Datos Xestor Oficial{% endblock %}
+
+
+{% block content %}
+<script>
+  function cargarDatos () {
+    $("#loading").removeClass("d-none");
+
+    $.ajax({
+      url: "{% url 'cargar-datos-xestor' %}",
+      data: {
+        "usuario": $("#usuario")[0].value,
+        "contrasinal": $("#contrasinal")[0].value
+      },
+      type: "get",
+      success: function(data) {
+        if (data.status != 'OK') {
+          console.log(data.status);
+        } else {
+          $(".log_text").html(data.log);
+
+          $("#log").removeClass("d-none");
+          $("#loading").addClass("d-none");
+        }
+      },
+    });
+
+  }
+</script>
+<h3>Cargar Datos do xestor oficial</h3>
+<div>
+  <div class="mb-3">
+    <label for="usuario" class="form-label">Usuario</label>
+    <input type="text" class="form-control" id="usuario">
+  </div>
+  <div class="mb-3">
+    <label for="contrasinal" class="form-label">Contrasinal</label>
+    <input type="password" class="form-control" id="contrasinal">
+  </div>
+  <button onclick="cargarDatos()" class="btn btn-primary">Cargar</button>
+</div>
+<div>
+  <section id="loading" class="d-none">
+    <h5>Cargando datos...</h5>
+    <p><i class="fas fa-spinner fa-spin "></i></p>
+  </section>
+  <section id="log" class="d-none">
+    <h3>Log</h3>
+    <div class="log_text">
+
+    </div>
+  </section>
+</div>
+
+{% endblock %}

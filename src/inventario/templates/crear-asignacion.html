@@ -1,0 +1,15 @@
+<!-- inventario/templates/crear-asignacion.html -->
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Noca Asignacion{% endblock %}
+
+
+{% block content %}
+<h3>Nova Asignación</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form |  crispy }}
+    <input type="submit" value="Gardar">
+</form>
+{% endblock %}
