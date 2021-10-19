@@ -45,6 +45,8 @@ def listaIncidencias (request):
     incidencias_plus = [ {
         "pk": incidencia.pk,
         "aberta": incidencia.aberta,
+        "equipo": incidencia.equipo,
+        "usuario": incidencia.usuario,
         "data": incidencia.data,
         "comentarios": [{
                 "desc": comentario.descricion,

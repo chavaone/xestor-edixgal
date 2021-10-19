@@ -25,12 +25,13 @@
 
   .accordion-item .accordion-button {
 
+
     .numero {
       flex-basis: 40px;
     }
 
     .data {
-      flex: 1;
+      flex-basis: 250px;
       font-style: italic;
     }
 
@@ -40,6 +41,15 @@
 
     .comentarios {
       flex-basis: 50px;
+    }
+
+    .usuario {
+      flex:1;
+      font-weight: bold;
+    }
+
+    .equipo {
+      flex:1;
     }
 
   }
