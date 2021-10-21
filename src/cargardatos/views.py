@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from inventario.models import Usuario, Equipo, Asignacion
 from django.http import HttpResponse
 import json
+from django.utils import timezone
 
 def _eliminarNonVistos(obx_alumnos, obx_profesores):
     return ""
@@ -19,7 +20,7 @@ def _procesar_datos (sn, nome=None, apelidos=None, curso_raw=None):
         log += '<p class="creacion">Equipo con SN %s creado.</p>' % (sn)
 
     if not (nome and apelidos): #Equipo sen asignar. Eliminanse as asignacions existentes.
-        asignacions = Asignacion.objects.filter(equipo=equipo).exclude(data_fin__isnull=False)
+        asignacions = Asignacion.objects.filter(equipo=equipo, manual=False).exclude(data_fin__isnull=False)
         for asignacion in asignacions:
             asignacion.data_fin = timezone.now()
             asignacion.save()
@@ -122,6 +123,6 @@ def cargarDatosXestor(request):
 
     ret_data = {
         'status': 'OK',
-        'log': log_alumnos + log_profesores  + "<p>Terminado!</p>"#+ log_eliminacion 
+        'log': log_alumnos + log_profesores  + "<p>Terminado!</p>"#+ log_eliminacion
     }
     return HttpResponse(json.dumps(ret_data), content_type='application/json')

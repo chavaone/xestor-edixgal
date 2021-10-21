@@ -40,6 +40,7 @@ class Asignacion (models.Model):
         on_delete=models.CASCADE,
         related_name='lista_usuarios'
         )
+    manual = models.BooleanField(default=False)
     data_ini = models.DateTimeField(auto_now_add=True)
     data_fin = models.DateTimeField(
             blank=True,

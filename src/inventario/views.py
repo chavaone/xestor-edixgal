@@ -21,7 +21,7 @@ class VistaCreacionEquipo(CreateView):
 
 class VistaCreacionAsignacion(CreateView):
     model = Asignacion
-    fields = ['equipo', 'usuario']
+    fields = ['equipo', 'usuario', 'manual']
     template_name = 'crear-asignacion.html'
 
     def get_success_url(self):
