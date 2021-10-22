@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.views.generic import CreateView, DeleteView
 from .models import Incidencia, ComentarioIncidencia
-from inventario.models import Equipo, Usuario
+from inventario.models import Equipo, Usuario, Asignacion
 from django.urls import reverse_lazy, reverse
 from .forms import ComentarioIncidenciaForm
 
@@ -18,8 +18,16 @@ class VistaCreacionIncidencia(CreateView):
         initial = initial.copy()
         query_usuario = self.request.GET.get('usuario','')
         query_equipo = self.request.GET.get('equipo','')
-        if query_usuario: initial['usuario'] = query_usuario
-        if query_equipo: initial['equipo'] = query_equipo
+        if query_usuario:
+            initial['usuario'] = query_usuario
+            asignacion = Asignacion.objects.filter(usuario=query_usuario, data_fin__isnull=True)
+            if asignacion:
+                initial['equipo']= asignacion[0].equipo
+        if query_equipo:
+            initial['equipo'] = query_equipo
+            asignacion = Asignacion.objects.filter(equipo=query_equipo, data_fin__isnull=True)
+            if asignacion:
+                initial['usuario']= asignacion[0].usuario
         return initial
 
     def get_success_url(self):

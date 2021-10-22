@@ -113,7 +113,7 @@
   </div>
   {% endif %}
   <div>
-    <a href="{% url 'crear-incidencia' %}" class="btn btn-primary">Nova Incidencia</a>
+    <a href="{% url 'crear-incidencia' %}?equipo={{equipo.pk}}" class="btn btn-primary">Nova Incidencia</a>
   </div>
 </section>
 
