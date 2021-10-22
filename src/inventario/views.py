@@ -5,7 +5,7 @@ from incidencias.models import Incidencia, ComentarioIncidencia
 from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, Count
 
 class VistaCreacionUsuario(CreateView):
     model = Usuario
@@ -154,7 +154,9 @@ def vistaUsuario (request, pk):
 def listaEquipos (request):
     busca = request.GET.get('busca', '')
 
-    equipos = Equipo.objects.all()
+    equipos = Equipo.objects.all().annotate(
+           incidencia_count=Count('incidencia')
+      ).order_by('-incidencia_count')
     if busca:
         equipos = equipos.filter(numeroDeSerie__contains=busca)
 
