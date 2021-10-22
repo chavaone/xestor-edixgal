@@ -28,7 +28,7 @@ class Equipo (models.Model):
     enActivo = models.BooleanField(default=True)
 
     def __str__(self):
-        return '#%s' %(self.numeroDeSerie).upper()
+        return '#%s (%i)' %(self.numeroDeSerie.upper(), self.pk)
 
 class Asignacion (models.Model):
     usuario =  models.ForeignKey(
