@@ -41,6 +41,13 @@
       <em>Sen usuario</em>
       {% endif %}
     </dd>
+
+    {% if incidencia.numServizoExterno %}
+    <dt>Número de Seguimento</dt>
+    <dd>
+    {{incidencia.tipoServizoExterno}}{{incidencia.numServizoExterno}}
+    </dd>
+    {% endif %}
   </dl>
   <div>
     <a class="btn btn-primary" href="{% url 'cambiar-estado-incidencia' pk=incidencia.pk %}">

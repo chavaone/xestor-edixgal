@@ -19,6 +19,13 @@
         {% endif %}
         </span>
         <span class="equipo">{{incidencia.equipo.numeroDeSerie}}</span>
+        <span class="seguimento">
+        {% if incidencia.numServizoExterno %}
+        <span class="badge bg-secondary">
+          {{incidencia.tipoServizoExterno}}{{incidencia.numServizoExterno}}
+        </span>
+        {% endif %}
+        </span>
         <span class="aberta">
           {% if incidencia.aberta %}
             <span class="badge rounded-pill bg-warning text-dark">ABERTA</span>

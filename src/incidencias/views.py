@@ -47,6 +47,8 @@ def listaIncidencias (request):
         "aberta": incidencia.aberta,
         "equipo": incidencia.equipo,
         "usuario": incidencia.usuario,
+        "numServizoExterno": incidencia.numServizoExterno,
+        "tipoServizoExterno": incidencia.tipoServizoExterno,
         "data": incidencia.data,
         "comentarios": [{
                 "desc": comentario.descricion,
@@ -66,6 +68,8 @@ def vistaIncidencia (request, pk):
         "data": incidencia.data,
         "equipo": incidencia.equipo,
         "usuario": incidencia.usuario,
+        "numServizoExterno": incidencia.numServizoExterno,
+        "tipoServizoExterno": incidencia.tipoServizoExterno,
         "comentarios": [{
                 "pk": comentario.pk,
                 "desc": comentario.descricion,
