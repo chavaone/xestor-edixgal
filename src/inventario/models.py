@@ -9,6 +9,7 @@ class Usuario (models.Model):
         ('PR', 'Profesor'),
         ('eA', 'Exalumno'),
         ('eP', 'Exprofesor'),
+        ('CE', 'Centro'),
     ]
     apelidos = models.CharField(max_length=200)
     nome = models.CharField(max_length=200)
