@@ -1,0 +1,25 @@
+
+tr.equipoDeBaixa {
+  text-decoration: line-through;
+  opacity: 0.65;
+}
+
+.incidencia {
+
+  &--pe {
+    color: green;
+    text-decoration: line-through;
+  }
+
+  &--ac {
+    color: red;
+  }
+
+  &--ef {
+    color: orange;
+  }
+
+  &--et {
+    color: grey;
+  }
+}

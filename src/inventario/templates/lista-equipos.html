@@ -31,7 +31,7 @@
   </thead>
   <tbody>
     {% for equipo in equipos %}
-      <tr>
+      <tr class="{% if not equipo.activo %}equipoDeBaixa{% endif %}">
         <th scope="row">{{equipo.pk}}</th>
         <td>{{equipo.sn}}</td>
         <td>{{equipo.info}}</td>

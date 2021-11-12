@@ -157,7 +157,7 @@ def listaEquipos (request):
 
     equipos = Equipo.objects.all().annotate(
            incidencia_count=Count('incidencia')
-      ).order_by('-incidencia_count')
+      ).order_by('-enActivo', '-incidencia_count')
     if busca:
         equipos = equipos.filter(numeroDeSerie__contains=busca)
 
