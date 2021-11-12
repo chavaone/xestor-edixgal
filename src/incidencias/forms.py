@@ -1,5 +1,5 @@
-from django.forms import ModelForm, HiddenInput, Textarea
-from .models import ComentarioIncidencia
+from django.forms import ModelForm, HiddenInput, Textarea, RadioSelect
+from .models import ComentarioIncidencia, Incidencia
 
 class ComentarioIncidenciaForm(ModelForm):
      class Meta:
@@ -13,4 +13,16 @@ class ComentarioIncidenciaForm(ModelForm):
          widgets = {
             'incidencia': HiddenInput(),
             'descricion': Textarea(attrs={"rows":5}),
+        }
+
+
+class EstadoIncidenciaForm(ModelForm):
+     class Meta:
+         model = Incidencia
+         fields = [
+            'estado',
+         ]
+
+         widgets = {
+            'estado': RadioSelect(),
         }

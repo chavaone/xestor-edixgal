@@ -72,43 +72,7 @@
 <section>
   <h3>Incidencias</h3>
   {% if usuario.incidencias %}
-    <div class="accordion" id="incidencias" class="listaIncidencias">
-      {% for incidencia in usuario.incidencias %}
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="heading{{incidencia.pk}}">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{incidencia.pk}}" aria-expanded="true" aria-controls="collapse{{incidencia.pk}}">
-            <span class="numero">#{{incidencia.pk}}</span>
-            <span class="data">{{incidencia.data}}</span>
-            <span class="aberta">
-              {% if incidencia.aberta %}
-                <span class="badge rounded-pill bg-warning text-dark">ABERTA</span>
-              {% else %}
-                <span class="badge rounded-pill bg-success">PECHADA</span>
-              {% endif %}
-            </span>
-            <span class="comentarios">
-              <span class=" badge bg-primary rounded-pill">{{incidencia.comentarios | length}}</span>
-            </span>
-          </button>
-        </h2>
-        <div id="collapse{{incidencia.pk}}" class="accordion-collapse collapse" aria-labelledby="heading{{incidencia.pk}}" data-bs-parent="#incidencias">
-          <div class="accordion-body">
-          {% for comentario in incidencia.comentarios %}
-            <article class="comentario">
-              <time>{{comentario.data}}</time>
-              <p>{{comentario.desc}}</p>
-            </article>
-          {% empty %}
-            <article class="comentario">
-              <em>Sen comentarios</em>
-            </article>
-          {% endfor %}
-          <a href="{% url 'vista-incidencia' pk=incidencia.pk %}">Ver Todos</a>
-        </div>
-        </div>
-      </div>
-      {% endfor%}
-    </div>
+    {% include "fragmento-lista-incidencias.html" with incidencias=usuario.incidencias %}
   {% else %}
     <div>
       <em>Sen incidencias</em>

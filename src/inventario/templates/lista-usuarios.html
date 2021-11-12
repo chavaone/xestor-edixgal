@@ -34,7 +34,7 @@
       <div class="col">
         <div class="form-floating">
           <input type="text" class="form-control" id="busca" name="busca" onchange="this.form.submit()" value="{{busca}}">
-          <label for="busca">Buscar</label>         
+          <label for="busca">Buscar</label>
         </div>
       </div>
     </div>
@@ -63,7 +63,7 @@
         <td scope="row">{% for equipo in usuario.equipos %}<a href="{% url 'vista-equipo' pk=equipo.pk %}">{{equipo.sn}}</a><br/>{% endfor %}</td>
         <td scope="row">
           {% for incidencia in usuario.incidencias %}
-            <a href="{% url 'vista-incidencia' pk=incidencia.pk %}">#{{incidencia.pk}}</a>
+          <a href="{% url 'vista-incidencia' pk=incidencia.pk %}" class="incidencia incidencia--{{incidencia.estado|lower}}">#{{incidencia.pk}}</a>
           {% endfor %}
         </td>
         <td scope="row">

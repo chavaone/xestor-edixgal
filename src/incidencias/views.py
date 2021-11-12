@@ -3,7 +3,7 @@ from django.views.generic import CreateView, DeleteView
 from .models import Incidencia, ComentarioIncidencia
 from inventario.models import Equipo, Usuario, Asignacion
 from django.urls import reverse_lazy, reverse
-from .forms import ComentarioIncidenciaForm
+from .forms import ComentarioIncidenciaForm, EstadoIncidenciaForm
 
 class VistaCreacionIncidencia(CreateView):
     model = Incidencia
@@ -52,7 +52,7 @@ class VistaBorradoComentario(DeleteView):
 def listaIncidencias (request):
     incidencias_plus = [ {
         "pk": incidencia.pk,
-        "aberta": incidencia.aberta,
+        "estado": incidencia.estado,
         "equipo": incidencia.equipo,
         "usuario": incidencia.usuario,
         "numServizoExterno": incidencia.numServizoExterno,
@@ -62,8 +62,8 @@ def listaIncidencias (request):
                 "desc": comentario.descricion,
                 "ten_fincheiro": comentario.ficheiro is not None,
                 "data": comentario.data
-            } for comentario in ComentarioIncidencia.objects.filter(incidencia=incidencia)[:2]]
-        } for incidencia in Incidencia.objects.all().order_by('-aberta','data')
+            } for comentario in ComentarioIncidencia.objects.filter(incidencia=incidencia)[:3]]
+        } for incidencia in Incidencia.objects.all().order_by('estado','-data')
     ]
     return render(request, 'lista-incidencias.html', {'incidencias': incidencias_plus})
 
@@ -72,7 +72,7 @@ def vistaIncidencia (request, pk):
     incidencia = Incidencia.objects.get(pk=pk)
     incidencia_plus = {
         "pk": incidencia.pk,
-        "aberta": incidencia.aberta,
+        "estado": incidencia.estado,
         "data": incidencia.data,
         "equipo": incidencia.equipo,
         "usuario": incidencia.usuario,
@@ -86,7 +86,9 @@ def vistaIncidencia (request, pk):
             } for comentario in ComentarioIncidencia.objects.filter(incidencia=incidencia)]
         }
 
-    return render(request, 'vista-incidencia.html', {'incidencia': incidencia_plus, 'form_comentario': ComentarioIncidenciaForm(initial={'incidencia': incidencia})})
+    return render(request, 'vista-incidencia.html', {
+        'incidencia': incidencia_plus,
+        'form_comentario': ComentarioIncidenciaForm(initial={'incidencia': incidencia}), 'form_estado': EstadoIncidenciaForm()})
 
 def engadirComentario (request):
     if request.method != 'POST':
@@ -97,7 +99,10 @@ def engadirComentario (request):
     return vistaIncidencia(request, request.POST['incidencia'])
 
 def cambiarEstadoIncidencia(request, pk):
+    if request.method != 'POST':
+        return
     incidencia = Incidencia.objects.get(pk=pk)
-    incidencia.aberta = not incidencia.aberta
-    incidencia.save()
+    form_data = EstadoIncidenciaForm(request.POST, request.FILES, instance=incidencia)
+    form_data.save()
+
     return redirect(reverse('vista-incidencia', kwargs={'pk': pk}))

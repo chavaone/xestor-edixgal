@@ -42,7 +42,7 @@
           {% endfor %}</td>
         <td>
           {% for incidencia in equipo.incidencias %}
-            <a href="{% url 'vista-incidencia' pk=incidencia.pk %}">#{{incidencia.pk}}</a>
+            <a href="{% url 'vista-incidencia' pk=incidencia.pk %}" class="incidencia incidencia--{{incidencia.estado|lower}}">#{{incidencia.pk}}</a>
           {% endfor %}
         </td>
         <td>

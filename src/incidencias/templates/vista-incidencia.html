@@ -13,9 +13,13 @@
 
     <dt>Estado</dt>
     <dd>
-      {% if incidencia.aberta %}
-        <span class="badge rounded-pill bg-warning text-dark">ABERTA</span>
-      {% else %}
+      {% if incidencia.estado == 'AC' %}
+        <span class="badge rounded-pill bg-danger">ACCIÓN</span>
+      {% elif incidencia.estado == 'EF' %}
+        <span class="badge rounded-pill bg-warning text-dark">E. FAMILIA</span>
+      {% elif incidencia.estado == 'ET' %}
+        <span class="badge rounded-pill bg-secondary">E. TÉCNICO</span>
+      {% elif incidencia.estado == 'PE' %}
         <span class="badge rounded-pill bg-success">PECHADA</span>
       {% endif %}
     </dd>
@@ -50,13 +54,9 @@
     {% endif %}
   </dl>
   <div>
-    <a class="btn btn-primary" href="{% url 'cambiar-estado-incidencia' pk=incidencia.pk %}">
-      {% if incidencia.aberta %}
-      Cerrar Incidencia
-      {% else %}
-      Reabrir Incidencia
-      {% endif %}
-    </a>
+    <button class="btn btn-primary" type="button"  data-bs-toggle="modal" data-bs-target="#cambiarEstado" aria-expanded="false" aria-controls="engadirComentarios">
+    Cambiar Estado
+    </button>
     <a class="btn btn-primary" href="{% url 'eliminar-incidencia' pk=incidencia.pk %}"><i class="fa fa-trash"></i> Eliminar Incidencia</a>
   </div>
 </section>
@@ -116,5 +116,28 @@ Engadir Comentario
   </div>
 </div>
 
+
+<div class="modal fade" id="cambiarEstado" tabindex="-1" role="dialog" aria-labelledby="cambiarEstadoLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cambiarEstadoLabel">Cambiar Estado</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="post" action="{% url 'cambiar-estado-incidencia' pk=incidencia.pk %}" enctype="multipart/form-data">
+        <div class="modal-body">
+          {% csrf_token %}
+          {{ form_estado |  crispy }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-secondary" value="Gardar">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

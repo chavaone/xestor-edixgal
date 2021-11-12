@@ -7,6 +7,12 @@ class Incidencia (models.Model):
         ('U', 'Unidade de Atención a Centros'),
         ('P', 'Servizo Premium EDIXGAL')
     ]
+    ESTADOS = [
+        ('AC', 'Require Acción'),
+        ('EF', 'Espera Familias'),
+        ('ET', 'Espera Servicio Técnico'),
+        ('PE', 'Pechada')
+    ]
     equipo = models.ForeignKey(
         Equipo,
         blank=True,
@@ -27,7 +33,11 @@ class Incidencia (models.Model):
         blank=True,
         null=True
     )
-    aberta = models.BooleanField(default=True)
+    estado = models.CharField(
+        max_length=2,
+        choices=ESTADOS,
+        default='AC'
+    )
     data = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):

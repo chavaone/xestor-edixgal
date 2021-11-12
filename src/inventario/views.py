@@ -108,6 +108,7 @@ def listaUsuarios (request):
                 ],
             "incidencias": [ {
                 "pk": incidencia.pk,
+                "estado": incidencia.estado
                 } for incidencia in Incidencia.objects.filter(usuario=usuario)
             ],
         } for usuario in paxina.object_list],
@@ -139,7 +140,7 @@ def vistaUsuario (request, pk):
             ],
         "incidencias": [ {
             "pk": incidencia.pk,
-            "aberta": incidencia.aberta,
+            "estado": incidencia.estado,
             "data": incidencia.data,
             "comentarios": [{
                     "desc": comentario.descricion,
@@ -173,7 +174,8 @@ def listaEquipos (request):
          ],
          "incidencias": [ {
              "pk": incidencia.pk,
-             } for incidencia in Incidencia.objects.filter(equipo=equipo).exclude(aberta=False)
+             "estado": incidencia.estado
+             } for incidencia in Incidencia.objects.filter(equipo=equipo).exclude(estado='PE')
          ],
      } for equipo in equipos],
      'busca': busca
@@ -199,14 +201,14 @@ def vistaEquipo (request, pk):
         ],
         "incidencias": [ {
             "pk": incidencia.pk,
-            "aberta": incidencia.aberta,
+            "estado": incidencia.estado,
             "data": incidencia.data,
             "comentarios": [{
                     "desc": comentario.descricion,
                     "ten_fincheiro": comentario.ficheiro is not None,
                     "data": comentario.data
                 } for comentario in ComentarioIncidencia.objects.filter(incidencia=incidencia)[:2]]
-            } for incidencia in Incidencia.objects.filter(equipo=equipo).order_by('-aberta')
+            } for incidencia in Incidencia.objects.filter(equipo=equipo).order_by('estado','-data')
         ],
     }
     return render(request, 'vista-equipo.html', {'equipo': equipo_plus})
