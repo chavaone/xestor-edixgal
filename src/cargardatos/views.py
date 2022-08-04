@@ -6,6 +6,9 @@ from django.http import HttpResponse
 import json
 from django.utils import timezone
 
+
+BASE_URL = "https://glpi.edu.xunta.gal/premium/admin/"
+
 def _eliminarNonVistos(obx_alumnos, obx_profesores):
     return ""
 
@@ -100,7 +103,7 @@ def cargarDatosXestor(request):
 
     sesion = req.Session()
 
-    res_login = sesion.post("https://www.edu.xunta.gal/uac/premium/admin/acceso_usuarios_ldap.php",
+    res_login = sesion.post(BASE_URL + "acceso_usuarios_ldap.php",
                             data= {
                                     'action': "validate_captcha",
                                     'usuario': usuario,
@@ -113,10 +116,10 @@ def cargarDatosXestor(request):
         }
         return HttpResponse(json.dumps(ret_data), content_type='application/json')
 
-    res_alumnos = sesion.get("https://www.edu.xunta.gal/uac/premium/admin/equipos_colegio.php")
+    res_alumnos = sesion.get(BASE_URL + "equipos_colegio.php")
     log_alumnos, obx_vistos_alumnos = _cargarDatos(res_alumnos.text, True)
 
-    res_profesores = sesion.get("https://www.edu.xunta.gal/uac/premium/admin/equiposProfesorado_colegio.php")
+    res_profesores = sesion.get(BASE_URL + "equiposProfesorado_colegio.php")
     log_profesores, obx_vistos_profesores =  _cargarDatos(res_profesores.text, False)
 
     #log_eliminacion = _eliminarNonVistos(obx_vistos_alumnos, obx_vistos_profesores)
