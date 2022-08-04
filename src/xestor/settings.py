@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'sass_processor',
     'crispy_forms',
     'crispy_bootstrap5',
+    'dbbackup',  # django-dbbackup
 ]
 
 MIDDLEWARE = [
@@ -153,3 +154,7 @@ SASS_PROCESSOR_INCLUDE_DIRS = [
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
+#BACKUP
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR.parent, "backups")}
