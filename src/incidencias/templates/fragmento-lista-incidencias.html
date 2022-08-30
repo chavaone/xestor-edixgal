@@ -8,7 +8,7 @@
       <span class="data">{{incidencia.data}}</span>
       <span class="usuario">
       {% if incidencia.usuario %}
-      {{incidencia.usuario.nome}} ({{incidencia.usuario.nivel}} {{incidencia.usuario.curso}})
+      {{incidencia.usuario.nome}} {{incidencia.usuario.apelidos}} ({{incidencia.usuario.nivel}} {{incidencia.usuario.curso}})
       {% endif %}
       </span>
       <span class="equipo">{{incidencia.equipo.numeroDeSerie}}</span>
@@ -39,7 +39,7 @@
       <p>{{comentario.desc}}</p>
       <hr/>
       {% endfor %}
-      <a href="{% url 'vista-incidencia' pk=incidencia.pk %}">Ver Todos</a>
+      <a href="{% url 'vista-incidencia' pk=incidencia.pk %}">Ver máis</a>
     </div>
     </div>
   </div>
