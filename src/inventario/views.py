@@ -9,13 +9,13 @@ from django.db.models import Q, Count
 
 class VistaCreacionUsuario(CreateView):
     model = Usuario
-    fields = ['nome', 'apelidos','nivel',  'curso']
+    fields = ['nome', 'apelidos','nivel',  'curso', 'manual']
     template_name = 'crear-usuario.html'
     success_url = reverse_lazy('lista-usuarios')
 
 class VistaCreacionEquipo(CreateView):
     model = Equipo
-    fields = ['numeroDeSerie', 'info']
+    fields = ['numeroDeSerie', 'info', 'manual']
     template_name = 'crear-equipo.html'
     success_url = reverse_lazy('lista-equipos')
 

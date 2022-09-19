@@ -15,6 +15,7 @@ class Usuario (models.Model):
     nome = models.CharField(max_length=200)
     nivel = models.CharField(max_length=2,choices=CURSOS)
     curso = models.CharField(max_length=1, blank=True)
+    manual = models.BooleanField(default=False)
 
     def __str__(self):
         return '%s, %s (%s%s)' %(self.apelidos, self.nome, self.nivel, self.curso)
@@ -26,6 +27,7 @@ class Equipo (models.Model):
         blank=True,
         null=True)
     enActivo = models.BooleanField(default=True)
+    manual = models.BooleanField(default=False)
 
     def __str__(self):
         return '#%s (%i)' %(self.numeroDeSerie.upper(), self.pk)
