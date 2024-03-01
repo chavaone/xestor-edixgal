@@ -103,6 +103,7 @@ def listaUsuarios (request):
             "curso": usuario.curso,
             "equipos": [ {
                 "pk": asignacion.equipo.pk,
+                "manual": asignacion.manual,
                 "sn": asignacion.equipo.numeroDeSerie
                 } for asignacion in Asignacion.objects.filter(usuario=usuario).exclude(data_fin__isnull=False)
                 ],
@@ -155,9 +156,10 @@ def vistaUsuario (request, pk):
 def listaEquipos (request):
     busca = request.GET.get('busca', '')
 
-    equipos = Equipo.objects.all().annotate(
-           incidencia_count=Count('incidencia')
-      ).order_by('-enActivo', '-incidencia_count')
+    equipos = Equipo.objects.all(
+      ).annotate(incidencia_count=Count('incidencia', exclude=Q(incidencia__estado__eq='PE'))
+      ).annotate(usuarios_count=Count('lista_usuarios', filter=Q(lista_usuarios__data_fin__isnull=True))
+      ).order_by('-enActivo', 'usuarios_count','-incidencia_count')
     if busca:
         equipos = equipos.filter(numeroDeSerie__contains=busca)
 
@@ -169,6 +171,7 @@ def listaEquipos (request):
          "activo": equipo.enActivo,
          "usuarios": [ {
              "pk": asignacion.usuario.pk,
+             "manual": asignacion.manual,
              "nome": asignacion.usuario.apelidos + ", "  + asignacion.usuario.nome
              } for asignacion in Asignacion.objects.filter(equipo=equipo).exclude(data_fin__isnull=False)
          ],

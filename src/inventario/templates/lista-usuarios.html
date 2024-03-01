@@ -60,7 +60,13 @@
         <td scope="row">{{usuario.nome}}</td>
         <td scope="row">{{usuario.apelidos}}</td>
         <td scope="row">{{usuario.nivel}} {{usuario.curso}}</td>
-        <td scope="row">{% for equipo in usuario.equipos %}<a href="{% url 'vista-equipo' pk=equipo.pk %}">{{equipo.sn}}</a><br/>{% endfor %}</td>
+        <td scope="row">
+          {% for equipo in usuario.equipos %}
+          <a href="{% url 'vista-equipo' pk=equipo.pk %}">{{equipo.sn}}</a>
+          {% if equipo.manual%}<span> (M)</span>{% endif %}
+          <br/>
+          {% endfor %}
+        </td>
         <td scope="row">
           {% for incidencia in usuario.incidencias %}
           <a href="{% url 'vista-incidencia' pk=incidencia.pk %}" class="incidencia incidencia--{{incidencia.estado|lower}}">#{{incidencia.pk}}</a>

@@ -38,6 +38,7 @@
         <td>
           {% for usuario in equipo.usuarios %}
             <a href="{% url 'vista-usuario' pk=usuario.pk %}">{{usuario.nome}}</a>
+            {% if usuario.manual%}<span> (M)</span>{% endif %}
             <br/>
           {% endfor %}</td>
         <td>
