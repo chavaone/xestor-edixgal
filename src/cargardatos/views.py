@@ -47,10 +47,13 @@ def _procesar_datos (sn, nome=None, apelidos=None, curso_raw=None):
         usuario.curso = curso
         usuario.save()
     elif usuario.nivel != nivel or usuario.curso != curso:
-        log += '<p class="actualizacion">Datos usuario <em>%s, %s</em> actualizados.</p>' % (apelidos, nome)
-        usuario.nivel = nivel
-        usuario.curso = curso
-        usuario.save()
+        if usuario.manual:
+            log += '<p class="actualizacion">Datos usuario <em>%s, %s</em> non actualizados por estar marcado como manual.</p>' % (apelidos, nome)
+        else:
+            log += '<p class="actualizacion">Datos usuario <em>%s, %s</em> actualizados.</p>' % (apelidos, nome)
+            usuario.nivel = nivel
+            usuario.curso = curso
+            usuario.save()
 
     asignacion, asignacion_creada = Asignacion.objects.get_or_create(equipo=equipo, usuario=usuario)
 
@@ -69,13 +72,15 @@ def _cargarDatos(text, alumnado):
     else:
         filas = soup.select("table.listado tr")[2:]
 
+    datos_ordenadores = []
+
     for fila in filas:
         columnas = fila.select("td")
         if alumnado:
             sn = columnas[2].text.strip()
             nome = columnas[3].text.strip().title()
             apelidos = columnas[4].text.strip().title()
-            curso_raw = columnas[5].text.strip()
+            curso_raw = columnas[7].text.strip()
         else:
             sn = columnas[1].text.strip()
             nome = columnas[2].text.strip().title()
