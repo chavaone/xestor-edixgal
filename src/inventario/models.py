@@ -21,7 +21,7 @@ class Usuario (models.Model):
         return '%s, %s (%s%s)' %(self.apelidos, self.nome, self.nivel, self.curso)
 
 class Equipo (models.Model):
-    numeroDeSerie = models.CharField(max_length=30)
+    numeroDeSerie = models.CharField(max_length=30, unique=True)
     info = models.CharField(
         max_length=300,
         blank=True,
