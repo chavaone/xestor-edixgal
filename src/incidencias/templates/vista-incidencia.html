@@ -73,7 +73,7 @@
     <div class="comentarioIncidencia__body">
       <p>{{comentario.desc}}</p>
       {% if comentario.ficheiro %}
-      <a href="/media/{{comentario.ficheiro}}">
+      <a target="_blank" href="/media/{{comentario.ficheiro}}">
         <img src="/media/{{comentario.ficheiro}}" class="img-thumbnail" alt="Ficheiro">
       </a>
       {% endif %}
