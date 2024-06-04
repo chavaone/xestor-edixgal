@@ -15,7 +15,7 @@ class VistaCreacionUsuario(CreateView):
 
 class VistaCreacionEquipo(CreateView):
     model = Equipo
-    fields = ['numeroDeSerie', 'info', 'manual']
+    fields = ['numeroDeSerie','tipo_equipo','modelo', 'info', 'manual']
     template_name = 'crear-equipo.html'
     success_url = reverse_lazy('lista-equipos')
 
@@ -168,6 +168,8 @@ def listaEquipos (request):
          "pk": equipo.pk,
          "sn": equipo.numeroDeSerie,
          "info": equipo.info,
+         "modelo": equipo.modelo,
+         "tipo": equipo.tipo_equipo,
          "activo": equipo.enActivo,
          "usuarios": [ {
              "pk": asignacion.usuario.pk,
@@ -192,6 +194,8 @@ def vistaEquipo (request, pk):
         "pk": equipo.pk,
         "sn": equipo.numeroDeSerie,
         "info": equipo.info,
+        "modelo": equipo.modelo,
+        "tipo": equipo.tipo_equipo,
         "activo": equipo.enActivo,
         "usuarios": [ {
             "pk": asignacion.usuario.pk,

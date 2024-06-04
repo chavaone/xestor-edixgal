@@ -21,7 +21,22 @@ class Usuario (models.Model):
         return '%s, %s (%s%s)' %(self.apelidos, self.nome, self.nivel, self.curso)
 
 class Equipo (models.Model):
+    TIPOS_EQUIPO = [
+        ('EA', 'Equipo Alumnado'),
+        ('EP', 'Equipo Profesorado'),
+        ('EC', 'Equipo Clase'),
+        ('PR', 'Proxector'),
+        ('CA', 'Carro de carga'),
+        ('PD', 'PDI'),
+        ('PT', 'Pantalla táctil')
+    ]
+
     numeroDeSerie = models.CharField(max_length=30, unique=True)
+    tipo_equipo = models.CharField(max_length=2, choices=TIPOS_EQUIPO, default='EA')
+    modelo = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True)
     info = models.CharField(
         max_length=300,
         blank=True,

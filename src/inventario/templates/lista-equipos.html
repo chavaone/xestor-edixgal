@@ -22,7 +22,9 @@
   <thead>
     <tr>
       <th scope="col">#</th>
+      <th scope="col">Tipo</th>
       <th scope="col">N. de Serie</th>
+      <th scope="col">Modelo</th>
       <th scope="col">Descrición</th>
       <th scope="col">Usuario</th>
       <th scope="col">Incidencias</th>
@@ -33,7 +35,9 @@
     {% for equipo in equipos %}
       <tr class="{% if not equipo.activo %}equipoDeBaixa{% endif %}">
         <th scope="row">{{equipo.pk}}</th>
+        <td>{{equipo.tipo}}</td>
         <td>{{equipo.sn}}</td>
+        <td>{{equipo.modelo}}</td>
         <td>{{equipo.info}}</td>
         <td>
           {% for usuario in equipo.usuarios %}
